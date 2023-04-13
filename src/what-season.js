@@ -25,12 +25,12 @@ function getSeason(date) {
             month>4 && month<8 ? 'summer' :
             month>7 && month<11 ? 'autumn' : 'winter'
       else 
-      throw new NotImplementedError('Invalid date!');  
+      throw new Error('Invalid date!');  
     } catch {
-      throw new NotImplementedError('Invalid date!');
+      throw new Error('Invalid date!');
     }
   }
-  throw new NotImplementedError('Invalid date!');
+  throw new Error('Invalid date!');
   //return 'Invalid date!'
 }
 
