@@ -20,15 +20,57 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  constructor(direct = true) {
+      this.isDirect = direct;
+      this.FIRST_CHAR = 'A'.charCodeAt(0);
+      this.SHIFT_NUMBER = 26;
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+
+
+  encrypt(stringFrom, stringKey) {
+    if(!stringFrom || !stringKey) {
+      throw new Error('Incorrect arguments!')
+    }
+    let stringTo = '';
+    let j = 0;
+    for(let i=0; i<stringFrom.length; i++) {
+      let shift = stringKey.toUpperCase().charCodeAt(j) 
+      let char = stringFrom.toUpperCase().charCodeAt(i) 
+      if(char>=65 && char<(65+26)) {
+          let newChar = String.fromCharCode( ((shift + char) % 26)+65);
+          stringTo += newChar;
+          j++;
+          if(j==stringKey.length) j=0;
+      } else {
+          stringTo += stringFrom[i]
+      }
+    }
+    return this.isDirect ? stringTo : stringTo.split("").reverse().join("");
+  }
+
+  decrypt(stringFrom, stringKey) {
+    if(!stringFrom || !stringKey) {
+      throw new Error('Incorrect arguments!')
+    }
+      let stringTo = '';
+      let j = 0;
+      for(let i=0; i<stringFrom.length; i++) {
+        let shift = stringKey.toUpperCase().charCodeAt(j) 
+        let char = stringFrom.toUpperCase().charCodeAt(i) 
+        if(char>=65 && char<(65+26)) {
+            let diff = (char-shift) < 0 ? (26 + (char-shift)) : (char-shift)
+            let newChar = String.fromCharCode( (diff % 26)+65);
+            stringTo += newChar;
+            j++;
+            if(j==stringKey.length) j=0;
+        } else {
+            stringTo += stringFrom[i]
+        }
+      }
+      return this.isDirect ? stringTo : stringTo.split("").reverse().join("");
   }
 }
+
 
 module.exports = {
   VigenereCipheringMachine
